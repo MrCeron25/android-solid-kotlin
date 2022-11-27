@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">База данных</string>
+    <string name="view_button">Просмотр</string>
+    <string name="add_button">Добавить</string>
+    <string name="exit_button">Выход</string>
+    <string name="delete_button">Удалить</string>
+    <string name="sort_button">Сортировка</string>
+    <string name="change_button">Изменить</string>
+    <string name="search_button">Поиск</string>
+    <string name="root_fragment_title">База данных</string>
+    <string name="add_fragment_title">Добавление</string>
+    <string name="textViewSurname">Фамилия</string>
+    <string name="defaultTextViewSurname">Name</string>
+</resources>
