@@ -10,7 +10,16 @@
     <string name="search_button">Search</string>
     <string name="add_fragment_title">Adding</string>
     <string name="textViewSurname">Surname</string>
-    <string name="defaultTextViewSurname">Name</string>
+    <string name="defaultTextViewSurname">Surname</string>
+    <string name="textViewName">Name</string>
+    <string name="defaultTextViewName">Name</string>
+    <string name="textViewPatronymic">Patronymic</string>
+    <string name="defaultTextViewPatronymic">Patronymic</string>
+    <string name="textViewAge">Age</string>
+    <string name="defaultTextViewAge">20</string>
+    <string name="woman">Woman</string>
+    <string name="male">Male</string>
+    <string name="textViewSex">Sex</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

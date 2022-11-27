@@ -11,5 +11,14 @@
     <string name="root_fragment_title">База данных</string>
     <string name="add_fragment_title">Добавление</string>
     <string name="textViewSurname">Фамилия</string>
-    <string name="defaultTextViewSurname">Name</string>
+    <string name="defaultTextViewSurname">Surname</string>
+    <string name="textViewName">Имя</string>
+    <string name="defaultTextViewName">Name</string>
+    <string name="textViewPatronymic">Отчество</string>
+    <string name="defaultTextViewPatronymic">Patronymic</string>
+    <string name="textViewAge">Возраст</string>
+    <string name="defaultTextViewAge">20</string>
+    <string name="woman">Женщина</string>
+    <string name="male">Мужчина</string>
+    <string name="textViewSex">Пол</string>
 </resources>

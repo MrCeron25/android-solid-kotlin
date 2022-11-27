@@ -31,6 +31,7 @@
         android:layout_above="@+id/buttons"
         android:layout_below="@+id/fragmentTitle"
         android:layout_margin="30dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -40,13 +41,85 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editTextSurname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text="@string/defaultTextViewSurname"
             android:textSize="20sp" />
+
+        <!--###################################-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewName"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/defaultTextViewName"
+            android:textSize="20sp" />
+
+        <!--###################################-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewPatronymic"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextPatronymic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/defaultTextViewPatronymic"
+            android:textSize="20sp" />
+
+        <!--###################################-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewAge"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextAge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:ems="10"
+            android:inputType="number"
+            android:text="@string/defaultTextViewAge"
+            android:textSize="20sp" />
+
+        <!--###################################-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/textViewSex"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/sexSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:textSize="20sp" />
+
+        <!--###################################-->
 
     </LinearLayout>
 
