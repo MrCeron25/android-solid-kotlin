@@ -2,6 +2,7 @@ package com.example.pr11.kotlin.student
 
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.student.Student
+import kotlinx.coroutines.newSingleThreadContext
 
 data class StudentImpl(
     override var surname: String = "",
