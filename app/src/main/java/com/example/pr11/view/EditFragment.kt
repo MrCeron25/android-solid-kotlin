@@ -2,8 +2,6 @@ package com.example.pr11.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +11,11 @@ import com.example.pr11.databinding.FragmentEditBinding
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.factory.SimpleStudentFactory
 import com.example.pr11.kotlin.parsers.SexParserImpl
-import com.example.pr11.model.StudentImplList
+import com.example.pr11.model.SexSpinner
+import com.example.pr11.model.SexSpinner.Companion.MALE_INDEX
+import com.example.pr11.model.SexSpinner.Companion.UNDEFINED_INDEX
+import com.example.pr11.model.SexSpinner.Companion.WOMAN_INDEX
+import com.example.pr11.model.StudentDataBaseFlow
 import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.launch
 
@@ -29,8 +31,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentEditBinding.bind(view)
-        addSpinnerSexItems(view, binding.sexSpinner)
-
+        SexSpinner().addSpinnerSexItems(view, binding.sexSpinner)
         loadArguments()
 
         binding.editButton.setOnClickListener {
@@ -39,9 +40,8 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
                 val name = binding.editTextName.text.toString()
                 val patronymic = binding.editTextPatronymic.text.toString()
                 val age = binding.editTextAge.text.toString().toIntOrNull() ?: 0
-                val sex = SexParserImpl().getSex(
-                    view, binding.sexSpinner.selectedItem.toString()
-                )
+                val sex =
+                    SexParserImpl().getSexFromResourcesName(binding.sexSpinner.selectedItem.toString())
                 val studentImpl = studentFactory.create {
                     this.surname = surname
                     this.name = name
@@ -55,20 +55,9 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
         }
     }
 
-    private fun addSpinnerSexItems(view: View, spinner: Spinner) {
-        val spinnerArray = listOf(
-            getString(R.string.male), getString(R.string.woman)
-        )
-        val adapter =
-            ArrayAdapter(view.context, android.R.layout.simple_spinner_item, spinnerArray).apply {
-                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            }
-        spinner.adapter = adapter
-    }
-
     private fun loadArguments() {
         position = requireArguments().getInt(POSITION)
-        val dataBase = StudentImplList.instance.dataBase.value
+        val dataBase = StudentDataBaseFlow.instance.dataBase.value
         val dataBaseIndices = dataBase.indices
         if (position in dataBaseIndices) {
             binding.editTextSurname.setText(dataBase[position].surname)
@@ -79,7 +68,7 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
                 when (dataBase[position].sex) {
                     Sex.MAN -> MALE_INDEX //viewModel.activityViewModel.getString(R.string.male)
                     Sex.WOMAN -> WOMAN_INDEX
-                    Sex.UNDEFINED -> 0
+                    Sex.UNDEFINED -> UNDEFINED_INDEX
                 }
             )
         }
@@ -88,8 +77,6 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
 
     companion object {
         const val POSITION = "com.example.pr11.view.EditFragment.POSITION"
-        const val MALE_INDEX = 0
-        const val WOMAN_INDEX = 1
     }
 
 }

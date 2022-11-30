@@ -8,10 +8,12 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class StudentImplList(private val studentFactory: SimpleStudentFactory = SimpleStudentFactory()) {
+class StudentDataBaseFlow {
+
+    private val studentFactory: SimpleStudentFactory = SimpleStudentFactory()
 
     @OptIn(DelicateCoroutinesApi::class)
-    private val context = newSingleThreadContext("StudentList")
+    private val context = newSingleThreadContext("StudentList") // list working in new thread
     private val _dataBase = DataBaseImpl<StudentImpl>().apply {
         add(studentFactory.create {
             surname = "Алексеев"
@@ -38,32 +40,42 @@ class StudentImplList(private val studentFactory: SimpleStudentFactory = SimpleS
     private val _dataBaseListFlow = MutableStateFlow(_dataBase.data.toList())
     val dataBase = _dataBaseListFlow.asStateFlow()
 
+    private suspend fun updateFlow() {
+        withContext(context) {
+            _dataBaseListFlow.emit(_dataBase.data.map { it })
+        }
+    }
+
     suspend fun add(student: StudentImpl) {
         withContext(context) {
-//            scope.async {
-//            }
-
             _dataBase.add(student)
-            _dataBaseListFlow.emit(_dataBase.data.map { it })
+            updateFlow()
         }
     }
 
     suspend fun delete(index: Int) {
         withContext(context) {
             _dataBase.delete(index)
-            _dataBaseListFlow.emit(_dataBase.data.map { it })
+            updateFlow()
         }
     }
 
     suspend fun change(index: Int, student: StudentImpl) {
         withContext(context) {
             _dataBase.change(index, student)
-            _dataBaseListFlow.emit(_dataBase.data.map { it })
+            updateFlow()
+        }
+    }
+
+    suspend fun sortBy(comparator: Comparator<in StudentImpl>) {
+        withContext(context) {
+            _dataBase.sortWith(comparator)
+            updateFlow()
         }
     }
 
     companion object {
-        val instance by lazy { StudentImplList() } // instance через lazy - so bad, простой конструктор лучше
+        val instance by lazy { StudentDataBaseFlow() } // instance через lazy - so bad, простой конструктор лучше
     }
 
 }

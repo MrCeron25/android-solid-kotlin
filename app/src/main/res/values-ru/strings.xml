@@ -24,4 +24,5 @@
     <string name="undefined">Неопределенный</string>
     <string name="edit_fragment_title">Изменение</string>
     <string name="apply_button">Применить</string>
+    <string name="sort_fragment_title">Сортировать по</string>
 </resources>

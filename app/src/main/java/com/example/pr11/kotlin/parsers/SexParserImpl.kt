@@ -1,15 +1,15 @@
 package com.example.pr11.kotlin.parsers
 
-import android.view.View
 import com.example.pr11.R
 import com.example.pr11.kotlin.enums.Sex
+import com.example.pr11.view_model.BaseViewModel
 import java.util.*
 
 interface SexParserFromView<T, R> {
-    fun getSex(view: View, sex: T): R
-    fun getMale(view: View): T
-    fun getWoman(view: View): T
-    fun getUndefined(view: View): T
+    fun getSexFromResourcesName(name: T): R
+    val man: T
+    val woman: T
+    val undefined: T
 }
 
 class SexParserImpl : Parser<String, Sex>, SexParserFromView<String, Sex> {
@@ -22,24 +22,18 @@ class SexParserImpl : Parser<String, Sex>, SexParserFromView<String, Sex> {
         }
     }
 
-    override fun getMale(view: View): String {
-        return view.context.getString(R.string.male)
-    }
+    override val man = BaseViewModel.instance.activityViewModel.getString(R.string.male)
 
-    override fun getWoman(view: View): String {
-        return view.context.getString(R.string.woman)
-    }
+    override val woman = BaseViewModel.instance.activityViewModel.getString(R.string.woman)
 
-    override fun getSex(view: View, sex: String): Sex {
-        return when (sex) {
-            view.context.getString(R.string.woman) -> Sex.WOMAN
-            view.context.getString(R.string.male) -> Sex.MAN
+    override fun getSexFromResourcesName(name: String): Sex {
+        return when (name) {
+            BaseViewModel.instance.activityViewModel.getString(R.string.woman) -> Sex.WOMAN
+            BaseViewModel.instance.activityViewModel.getString(R.string.male) -> Sex.MAN
             else -> Sex.UNDEFINED
         }
     }
 
-    override fun getUndefined(view: View): String {
-        return view.context.getString(R.string.undefined)
-    }
+    override val undefined = BaseViewModel.instance.activityViewModel.getString(R.string.undefined)
 
 }

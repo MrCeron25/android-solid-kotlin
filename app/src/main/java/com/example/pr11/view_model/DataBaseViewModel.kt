@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.student.StudentImpl
-import com.example.pr11.model.StudentImplList
+import com.example.pr11.model.StudentDataBaseFlow
 import kotlinx.coroutines.launch
 
 class DataBaseViewModel : ViewModel() {
 
-    private val _studentImplList = StudentImplList.instance
+    private val _studentImplList = StudentDataBaseFlow.instance
 
     val dataBaseFlow = _studentImplList.dataBase
 
@@ -21,7 +21,7 @@ class DataBaseViewModel : ViewModel() {
         sex: Sex,
     ) {
         viewModelScope.launch {
-            StudentImplList.instance.add(
+            StudentDataBaseFlow.instance.add(
                 StudentImpl(
                     surname, name, patronymic, age, sex
                 )
@@ -33,7 +33,7 @@ class DataBaseViewModel : ViewModel() {
         index: Int
     ) {
         viewModelScope.launch {
-            StudentImplList.instance.delete(index)
+            StudentDataBaseFlow.instance.delete(index)
         }
     }
 
@@ -41,7 +41,13 @@ class DataBaseViewModel : ViewModel() {
         index: Int, student: StudentImpl
     ) {
         viewModelScope.launch {
-            StudentImplList.instance.change(index, student)
+            StudentDataBaseFlow.instance.change(index, student)
+        }
+    }
+
+    fun sortBy(comparator: Comparator<in StudentImpl>) {
+        viewModelScope.launch {
+            StudentDataBaseFlow.instance.sortBy(comparator)
         }
     }
 

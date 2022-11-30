@@ -13,7 +13,12 @@ class BaseViewModel : ViewModel() {
         @SuppressLint("StaticFieldLeak")
         private var activity: Activity? = null
 
-        fun getString(res: Int): String? = activity?.getString(res)
+        fun getString(res: Int): String {
+            if (activity == null) {
+                throw Exception("ActivityViewModel.activity not set")
+            }
+            return activity!!.getString(res)
+        }
 
         fun setActivity(_activity: Activity) {
             activity = _activity

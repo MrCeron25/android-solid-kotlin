@@ -23,6 +23,7 @@
     <string name="undefined">Undefined</string>
     <string name="edit_fragment_title">Edit</string>
     <string name="apply_button">Apply</string>
+    <string name="sort_fragment_title">Sort by</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
