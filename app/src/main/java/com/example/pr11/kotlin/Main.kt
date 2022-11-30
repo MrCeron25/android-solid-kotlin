@@ -64,3 +64,5 @@ fun main() {
     val commandProcessing = CommandProcessingImpl(context, commandManager)
     commandProcessing.processing()
 }
+
+// между он старт и он ресьюм

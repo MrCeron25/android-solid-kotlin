@@ -5,7 +5,7 @@
     <string name="add_button">Добавить</string>
     <string name="exit_button">Выход</string>
     <string name="delete_button">Удалить</string>
-    <string name="sort_button">Сортировка</string>
+    <string name="sort_button">Сортировать</string>
     <string name="change_button">Изменить</string>
     <string name="search_button">Поиск</string>
     <string name="root_fragment_title">База данных</string>
@@ -21,4 +21,7 @@
     <string name="woman">Женщина</string>
     <string name="male">Мужчина</string>
     <string name="textViewSex">Пол</string>
+    <string name="undefined">Неопределенный</string>
+    <string name="edit_fragment_title">Изменение</string>
+    <string name="apply_button">Применить</string>
 </resources>

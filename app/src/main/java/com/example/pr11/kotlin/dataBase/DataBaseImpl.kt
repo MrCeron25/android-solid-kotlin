@@ -11,9 +11,9 @@ class DataBaseImpl<T : Student> : DataBase<T> {
     override fun add(item: T): Boolean = _data.add(item)
 
     override fun change(index: Int, item: T): Boolean {
-        return if ((_data.size > 0) and (index - 1 in 0 until _data.size)) {
-            _data.removeAt(index - 1)
-            _data.add(index - 1, item)
+        return if (index in _data.indices) {
+            _data.removeAt(index)
+            _data.add(index, item)
             true
         } else {
             false
@@ -21,8 +21,8 @@ class DataBaseImpl<T : Student> : DataBase<T> {
     }
 
     override fun delete(index: Int): Boolean {
-        return if ((_data.size > 0) and (index - 1 in 0 until _data.size)) {
-            _data.removeAt(index - 1)
+        return if (index in _data.indices) {
+            _data.removeAt(index)
             true
         } else {
             false

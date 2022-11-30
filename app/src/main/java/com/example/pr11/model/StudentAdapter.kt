@@ -3,18 +3,26 @@ package com.example.pr11.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.Button
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pr11.R
+import com.example.pr11.kotlin.enums.Sex
+import com.example.pr11.kotlin.factory.SimpleStudentFactory
+import com.example.pr11.kotlin.parsers.SexParserImpl
 import com.example.pr11.kotlin.student.StudentImpl
-import com.example.pr11.view_model.StudentViewModel
+import com.example.pr11.view.EditFragment
+import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.flow.StateFlow
 
-class StudentAdapter(val list: StateFlow<List<StudentImpl>>) : // viewModel: StudentViewModel
-    RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
-
+class StudentAdapter(
+    val list: StateFlow<List<StudentImpl>>,
+    private val baseViewModel: BaseViewModel,
+    private val navController: NavController
+) : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
+    
     /** Provide a reference to the type of views that you are using (custom ViewHolder). **/
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val surname: TextView
@@ -22,6 +30,12 @@ class StudentAdapter(val list: StateFlow<List<StudentImpl>>) : // viewModel: Stu
         val patronymic: TextView
         val age: TextView
         val sex: TextView
+        val deleteButton: Button
+        val changeButton: Button
+        val man: String
+        val woman: String
+        val undefined: String
+        private val sexParserImpl = SexParserImpl()
 
         init {
             surname = view.findViewById(R.id.editTextStudentSurname)
@@ -29,6 +43,11 @@ class StudentAdapter(val list: StateFlow<List<StudentImpl>>) : // viewModel: Stu
             patronymic = view.findViewById(R.id.editTextStudentPatronymic)
             age = view.findViewById(R.id.editTextStudentAge)
             sex = view.findViewById(R.id.spinnerStudentSex)
+            man = sexParserImpl.getMale(view)
+            woman = sexParserImpl.getWoman(view)
+            undefined = sexParserImpl.getUndefined(view)
+            deleteButton = view.findViewById(R.id.deleteStudent)
+            changeButton = view.findViewById(R.id.changeStudent)
         }
     }
 
@@ -43,13 +62,26 @@ class StudentAdapter(val list: StateFlow<List<StudentImpl>>) : // viewModel: Stu
         viewHolder.name.text = _list[position].name
         viewHolder.patronymic.text = _list[position].patronymic
         viewHolder.age.text = _list[position].age.toString()
-        viewHolder.sex.text = _list[position].sex.toString()
+        viewHolder.sex.text = when (_list[position].sex) {
+            Sex.MAN -> viewHolder.man
+            Sex.WOMAN -> viewHolder.woman
+            Sex.UNDEFINED -> viewHolder.undefined
+        }
         // viewHolder click on listener for buttons
+        viewHolder.deleteButton.setOnClickListener {
+            baseViewModel.dataBaseViewModel.delete(position)
+        }
+        viewHolder.changeButton.setOnClickListener {
+            navController.navigate(
+                R.id.action_rootFragment_to_editFragment,
+                bundleOf(EditFragment.POSITION to position)
+            )
+        }
     }
 
-   private var _list = list.value
+    private var _list = list.value
 
-    override fun getItemCount():Int {
+    override fun getItemCount(): Int {
         _list = list.value
         return _list.size
     }

@@ -20,6 +20,9 @@
     <string name="woman">Woman</string>
     <string name="male">Male</string>
     <string name="textViewSex">Sex</string>
+    <string name="undefined">Undefined</string>
+    <string name="edit_fragment_title">Edit</string>
+    <string name="apply_button">Apply</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_rootFragment_to_addFragment"
             app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_rootFragment_to_editFragment"
+            app:destination="@id/editFragment" />
     </fragment>
 
     <fragment
@@ -20,5 +23,10 @@
         android:name="com.example.pr11.view.AddFragment"
         android:label="fragment_add"
         tools:layout="@layout/fragment_add" />
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.pr11.view.EditFragment"
+        android:label="fragment_edit"
+        tools:layout="@layout/fragment_edit" />
 
 </navigation>

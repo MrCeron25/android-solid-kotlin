@@ -1,7 +1,6 @@
 package com.example.pr11.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -12,36 +11,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.pr11.R
 import com.example.pr11.databinding.FragmentAddBinding
-import com.example.pr11.model.SexSpinner
-import com.example.pr11.model.StudentAdapter
-import com.example.pr11.view_model.StudentViewModel
-import kotlinx.coroutines.*
+import com.example.pr11.kotlin.parsers.SexParserImpl
+import com.example.pr11.view_model.BaseViewModel
+import kotlinx.coroutines.launch
 
 
 class AddFragment : Fragment(R.layout.fragment_add), AdapterView.OnItemSelectedListener {
 
     private lateinit var binding: FragmentAddBinding
-    private lateinit var spinner: Spinner
-    private val viewModel: StudentViewModel by activityViewModels()
-//    private var scope: CoroutineScope? = null
-
-//    override fun onStart() {
-//        super.onStart()
-//        scope = CoroutineScope(Dispatchers.Main)
-//    }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        scope?.cancel()
-//    }
+    private val viewModel: BaseViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentAddBinding.bind(view)
-        spinner = view.findViewById(R.id.sexSpinner)
-
-        addSpinnerItems(view)
+        addSpinnerSexItems(view, binding.sexSpinner)
 
         binding.addButton.setOnClickListener {
             lifecycleScope.launch {
@@ -49,17 +33,20 @@ class AddFragment : Fragment(R.layout.fragment_add), AdapterView.OnItemSelectedL
                 val name = binding.editTextName.text.toString()
                 val patronymic = binding.editTextPatronymic.text.toString()
                 val age = binding.editTextAge.text.toString().toIntOrNull() ?: 0
-                val sex = SexSpinner.convertToSex(
-                    binding.sexSpinner.selectedItem.toString(), this@AddFragment
+                val sex = SexParserImpl().getSex(
+                    view, binding.sexSpinner.selectedItem.toString()
                 )
-                viewModel.add(surname, name, patronymic, age, sex)
-                Log.d("setOnClickListener", viewModel.studentListFlow.value.toString())
+                viewModel.dataBaseViewModel.add(surname, name, patronymic, age, sex)
+//                Log.d(
+//                    "setOnClickListener",
+//                    BaseViewModel.instance.dataBaseViewModel.dataBaseFlow.value.toString()
+//                )
                 findNavController().popBackStack()
             }
         }
     }
 
-    private fun addSpinnerItems(view: View) {
+    private fun addSpinnerSexItems(view: View, spinner: Spinner) {
         val spinnerArray = listOf(
             getString(R.string.male), getString(R.string.woman)
         )

@@ -7,11 +7,11 @@ import com.example.pr11.kotlin.student.StudentImpl
 import com.example.pr11.model.StudentImplList
 import kotlinx.coroutines.launch
 
-class StudentViewModel : ViewModel() {
+class DataBaseViewModel : ViewModel() {
 
     private val _studentImplList = StudentImplList.instance
 
-    val studentListFlow = _studentImplList.listFlow
+    val dataBaseFlow = _studentImplList.dataBase
 
     fun add(
         surname: String,
@@ -30,11 +30,23 @@ class StudentViewModel : ViewModel() {
     }
 
     fun delete(
-        student: StudentImpl
+        index: Int
     ) {
         viewModelScope.launch {
-//            StudentList.instance.delete(student)
+            StudentImplList.instance.delete(index)
         }
+    }
+
+    fun change(
+        index: Int, student: StudentImpl
+    ) {
+        viewModelScope.launch {
+            StudentImplList.instance.change(index, student)
+        }
+    }
+
+    companion object {
+        val instance by lazy { DataBaseViewModel() }
     }
 
 }
