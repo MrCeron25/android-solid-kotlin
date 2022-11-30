@@ -74,6 +74,15 @@ class StudentDataBaseFlow {
         }
     }
 
+    suspend fun search(vararg predicates: (StudentImpl) -> Boolean): List<StudentImpl> {
+        val res: List<StudentImpl>
+        withContext(context) {
+            res = _dataBase.search(*predicates)
+            updateFlow()
+        }
+        return res
+    }
+
     companion object {
         val instance by lazy { StudentDataBaseFlow() } // instance через lazy - so bad, простой конструктор лучше
     }

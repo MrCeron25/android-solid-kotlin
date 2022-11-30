@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_rootFragment_to_sortFragment"
             app:destination="@id/sortFragment" />
+        <action
+            android:id="@+id/action_rootFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 
     <fragment
@@ -36,5 +39,10 @@
         android:name="com.example.pr11.view.SortFragment"
         android:label="fragment_sort"
         tools:layout="@layout/fragment_sort" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.pr11.view.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
 
 </navigation>

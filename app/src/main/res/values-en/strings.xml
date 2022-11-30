@@ -25,4 +25,6 @@
     <string name="edit_fragment_title">Edit</string>
     <string name="apply_button">Apply</string>
     <string name="sort_fragment_title">Sort by</string>
+    <string name="search_fragment_title">Search</string>
+    <string name="view_fragment_title">Found records</string>
 </resources>

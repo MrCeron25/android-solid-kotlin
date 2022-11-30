@@ -5,7 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.student.StudentImpl
 import com.example.pr11.model.StudentDataBaseFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class DataBaseViewModel : ViewModel() {
 
@@ -49,6 +52,20 @@ class DataBaseViewModel : ViewModel() {
         viewModelScope.launch {
             StudentDataBaseFlow.instance.sortBy(comparator)
         }
+    }
+
+    fun search(vararg predicates: (StudentImpl) -> Boolean): List<StudentImpl> {
+        var res: List<StudentImpl> = emptyList()
+        runBlocking {
+            viewModelScope.launch {
+                runBlocking {
+                    withContext(Dispatchers.Default) { //async
+                        res = StudentDataBaseFlow.instance.search(*predicates)
+                    }
+                }
+            }
+        }
+        return res
     }
 
     companion object {

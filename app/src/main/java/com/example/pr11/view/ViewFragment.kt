@@ -9,22 +9,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pr11.R
-import com.example.pr11.databinding.FragmentRootBinding
+import com.example.pr11.databinding.FragmentViewBinding
 import com.example.pr11.model.StudentAdapter
 import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.launch
-import kotlin.system.exitProcess
+import java.util.*
 
-class RootFragment : Fragment(R.layout.fragment_root) {
+class ViewFragment : Fragment(R.layout.fragment_view) {
 
-    private lateinit var binding: FragmentRootBinding
+    private lateinit var binding: FragmentViewBinding
     private val viewModel: BaseViewModel by activityViewModels()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentRootBinding.bind(view)
+        binding = FragmentViewBinding.bind(view)
 
         val studentAdapter = StudentAdapter(
             viewModel.dataBaseViewModel.dataBaseFlow, viewModel, findNavController()
@@ -38,22 +38,6 @@ class RootFragment : Fragment(R.layout.fragment_root) {
             }
         }
 
-        binding.addButton.setOnClickListener {
-            findNavController().navigate(R.id.action_rootFragment_to_addFragment)
-        }
-
-        binding.sortButton.setOnClickListener {
-            findNavController().navigate(R.id.action_rootFragment_to_sortFragment)
-        }
-
-        binding.searchButton.setOnClickListener {
-            findNavController().navigate(R.id.action_rootFragment_to_searchFragment)
-        }
-
-        binding.exitButton.setOnClickListener {
-            viewModel.activityViewModel.finishActivity()
-            exitProcess(0)
-        }
     }
 
 }
