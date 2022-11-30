@@ -43,11 +43,11 @@ class RootFragment : Fragment(R.layout.fragment_root) {
         }
 
         binding.sortButton.setOnClickListener {
-
+            findNavController().navigate(R.id.action_rootFragment_to_sortFragment)
         }
 
         binding.searchButton.setOnClickListener {
-
+//            findNavController().navigate(R.id.)
         }
 
         binding.exitButton.setOnClickListener {
