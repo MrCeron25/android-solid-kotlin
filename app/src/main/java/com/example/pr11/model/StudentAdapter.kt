@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
@@ -31,6 +32,7 @@ class StudentAdapter(
         val sex: TextView
         val deleteButton: Button
         val changeButton: Button
+        val imageView: ImageView
 
         init {
             surname = view.findViewById(R.id.editTextStudentSurname)
@@ -40,6 +42,7 @@ class StudentAdapter(
             sex = view.findViewById(R.id.spinnerStudentSex)
             deleteButton = view.findViewById(R.id.deleteStudent)
             changeButton = view.findViewById(R.id.changeStudent)
+            imageView = view.findViewById(R.id.imageView)
         }
     }
 
@@ -59,6 +62,11 @@ class StudentAdapter(
             Sex.MAN -> sexParserImpl.man
             Sex.WOMAN -> sexParserImpl.woman
             Sex.UNDEFINED -> sexParserImpl.undefined
+        }
+        if (_list[position].image == null) {
+            viewHolder.imageView.setImageResource(R.drawable.clown)
+        } else {
+            viewHolder.imageView.setImageBitmap(_list[position].image)
         }
         // viewHolder click on listener for buttons
         viewHolder.deleteButton.setOnClickListener {

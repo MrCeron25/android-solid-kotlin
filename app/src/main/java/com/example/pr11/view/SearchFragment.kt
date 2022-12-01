@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.pr11.R
 import com.example.pr11.databinding.FragmentSearchBinding
 import com.example.pr11.kotlin.parsers.SexParserImpl
@@ -12,7 +13,6 @@ import com.example.pr11.model.SexSpinner
 import com.example.pr11.model.SexSpinner.Companion.MALE_INDEX
 import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.launch
-import java.util.*
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
@@ -36,20 +36,23 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     SexParserImpl().getSexFromResourcesName(binding.sexSpinner.selectedItem.toString())
                 // booleanVariable = if (booleanMethod()) exp else true;
                 // booleanVariable = !booleanMethod() || exp;
-                val arr = viewModel.dataBaseViewModel.search({
-                    if (surname.isNotEmpty()) it.surname.lowercase(Locale.getDefault()) == surname.lowercase(
-                        Locale.getDefault()
+                val findStudents = viewModel.dataBaseViewModel.search({
+                    if (surname.isNotEmpty()) it.surname.contains(
+                        surname, ignoreCase = true
                     ) else true
-                    if (name.isNotEmpty()) it.name.lowercase(Locale.getDefault()) == name.lowercase(
-                        Locale.getDefault()
-                    ) else true
-                    if (patronymic.isNotEmpty()) it.patronymic.lowercase(Locale.getDefault()) == patronymic.lowercase(
-                        Locale.getDefault()
+                    if (name.isNotEmpty()) it.name.contains(name, ignoreCase = true) else true
+                    if (patronymic.isNotEmpty()) it.patronymic.contains(
+                        patronymic, ignoreCase = true
                     ) else true
                     if (age != null) it.age == age else true
                     it.sex == sex
                 })
-//                findNavController().popBackStack()
+                findStudents.forEach { student ->
+                    viewModel.dataBaseViewModel.addToFindDataBase(student)
+                }
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_viewFragment
+                )
             }
         }
     }

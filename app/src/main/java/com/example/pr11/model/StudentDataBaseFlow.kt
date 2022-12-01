@@ -14,6 +14,7 @@ class StudentDataBaseFlow {
 
     @OptIn(DelicateCoroutinesApi::class)
     private val context = newSingleThreadContext("StudentList") // list working in new thread
+
     private val _dataBase = DataBaseImpl<StudentImpl>().apply {
         add(studentFactory.create {
             surname = "Алексеев"
@@ -40,6 +41,10 @@ class StudentDataBaseFlow {
     private val _dataBaseListFlow = MutableStateFlow(_dataBase.data.toList())
     val dataBase = _dataBaseListFlow.asStateFlow()
 
+    private val _findDataBase = DataBaseImpl<StudentImpl>()
+    private val _findDataBaseListFlow = MutableStateFlow(_findDataBase.data.toList())
+    val findDataBase = _findDataBaseListFlow.asStateFlow()
+
     private suspend fun updateFlow() {
         withContext(context) {
             _dataBaseListFlow.emit(_dataBase.data.map { it })
@@ -53,9 +58,25 @@ class StudentDataBaseFlow {
         }
     }
 
+    suspend fun addToFindDataBase(student: StudentImpl) {
+        withContext(context) {
+            _findDataBase.add(student)
+            _findDataBaseListFlow.emit(_findDataBase.data.map { it })
+        }
+    }
+
     suspend fun delete(index: Int) {
         withContext(context) {
             _dataBase.delete(index)
+//            _findDataBase.delete(index)
+            updateFlow()
+        }
+    }
+
+    suspend fun deleteFindDataBase(index: Int) {
+        withContext(context) {
+            _findDataBase.delete(index)
+//            _dataBase.delete(index) TODO
             updateFlow()
         }
     }

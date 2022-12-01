@@ -1,14 +1,12 @@
 package com.example.pr11.view_model
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.student.StudentImpl
 import com.example.pr11.model.StudentDataBaseFlow
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class DataBaseViewModel : ViewModel() {
 
@@ -16,27 +14,42 @@ class DataBaseViewModel : ViewModel() {
 
     val dataBaseFlow = _studentImplList.dataBase
 
+    val findDataBaseFlow = _studentImplList.findDataBase
+
     fun add(
         surname: String,
         name: String,
         patronymic: String,
         age: Int,
         sex: Sex,
+        image: Bitmap? = null,
     ) {
         viewModelScope.launch {
             StudentDataBaseFlow.instance.add(
                 StudentImpl(
-                    surname, name, patronymic, age, sex
+                    surname, name, patronymic, age, sex, image
                 )
             )
         }
     }
 
-    fun delete(
-        index: Int
+    fun addToFindDataBase(
+        student: StudentImpl
     ) {
         viewModelScope.launch {
+            StudentDataBaseFlow.instance.addToFindDataBase(student)
+        }
+    }
+
+    fun delete(index: Int) {
+        viewModelScope.launch {
             StudentDataBaseFlow.instance.delete(index)
+        }
+    }
+
+    fun deleteFindDataBase(index: Int) {
+        viewModelScope.launch {
+            StudentDataBaseFlow.instance.deleteFindDataBase(index)
         }
     }
 
@@ -54,17 +67,11 @@ class DataBaseViewModel : ViewModel() {
         }
     }
 
-    fun search(vararg predicates: (StudentImpl) -> Boolean): List<StudentImpl> {
+    suspend fun search(vararg predicates: (StudentImpl) -> Boolean): List<StudentImpl> {
         var res: List<StudentImpl> = emptyList()
-        runBlocking {
-            viewModelScope.launch {
-                runBlocking {
-                    withContext(Dispatchers.Default) { //async
-                        res = StudentDataBaseFlow.instance.search(*predicates)
-                    }
-                }
-            }
-        }
+        viewModelScope.async {
+            res = StudentDataBaseFlow.instance.search(*predicates)
+        }.await()
         return res
     }
 

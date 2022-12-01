@@ -43,6 +43,15 @@
         android:id="@+id/searchFragment"
         android:name="com.example.pr11.view.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_viewFragment"
+            app:destination="@id/viewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewFragment"
+        android:name="com.example.pr11.view.ViewFragment"
+        android:label="fragment_view"
+        tools:layout="@layout/fragment_view" />
 
 </navigation>

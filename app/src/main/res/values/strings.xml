@@ -26,6 +26,7 @@
     <string name="sort_fragment_title">Sort by</string>
     <string name="search_fragment_title">Search</string>
     <string name="view_fragment_title">Found records</string>
+    <string name="textViewPhoto">Photo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

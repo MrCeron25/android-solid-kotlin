@@ -1,5 +1,6 @@
 package com.example.pr11.kotlin.student
 
+import android.graphics.Bitmap
 import com.example.pr11.kotlin.enums.Sex
 
 interface Student {
@@ -8,4 +9,5 @@ interface Student {
     var patronymic: String
     var age: Int
     var sex: Sex
+    var image: Bitmap?
 }
