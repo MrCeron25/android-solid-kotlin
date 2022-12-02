@@ -2,7 +2,6 @@ package com.example.pr11.kotlin.student
 
 import android.graphics.Bitmap
 import com.example.pr11.kotlin.enums.Sex
-import java.io.*
 
 data class StudentImpl(
     override var surname: String = "",

@@ -5,6 +5,7 @@ interface DataBase<T> {
     fun delete(index: Int): Boolean
     fun change(index: Int, item: T): Boolean
     fun search(vararg predicates: (T) -> Boolean): List<T>
+    fun clear()
 
     fun sortWith(comparator: Comparator<in T>)
 

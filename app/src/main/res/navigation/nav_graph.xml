@@ -52,6 +52,10 @@
         android:id="@+id/viewFragment"
         android:name="com.example.pr11.view.ViewFragment"
         android:label="fragment_view"
-        tools:layout="@layout/fragment_view" />
+        tools:layout="@layout/fragment_view" >
+        <action
+            android:id="@+id/action_viewFragment_to_editFragment"
+            app:destination="@id/editFragment" />
+    </fragment>
 
 </navigation>

@@ -2,6 +2,7 @@ package com.example.pr11.view
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -42,12 +43,14 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
                 val age = binding.editTextAge.text.toString().toIntOrNull() ?: 0
                 val sex =
                     SexParserImpl().getSexFromResourcesName(binding.sexSpinner.selectedItem.toString())
+                val image = binding.photo.drawable?.toBitmapOrNull()
                 val studentImpl = studentFactory.create {
                     this.surname = surname
                     this.name = name
                     this.patronymic = patronymic
                     this.age = age
                     this.sex = sex
+                    this.image = image
                 }
                 viewModel.dataBaseViewModel.change(position, studentImpl)
                 findNavController().popBackStack()
@@ -66,14 +69,14 @@ class EditFragment : Fragment(R.layout.fragment_edit) {
             binding.editTextAge.setText(dataBase[position].age.toString())
             binding.sexSpinner.setSelection(
                 when (dataBase[position].sex) {
-                    Sex.MAN -> MALE_INDEX //viewModel.activityViewModel.getString(R.string.male)
+                    Sex.MAN -> MALE_INDEX
                     Sex.WOMAN -> WOMAN_INDEX
                     Sex.UNDEFINED -> UNDEFINED_INDEX
                 }
             )
+            binding.photo.setImageBitmap(dataBase[position].image)
         }
     }
-
 
     companion object {
         const val POSITION = "com.example.pr11.view.EditFragment.POSITION"

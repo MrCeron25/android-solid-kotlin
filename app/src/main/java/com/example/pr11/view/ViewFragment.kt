@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pr11.R
 import com.example.pr11.databinding.FragmentViewBinding
-import com.example.pr11.kotlin.student.StudentImpl
 import com.example.pr11.model.StudentAdapter
+import com.example.pr11.model.StudentIndexesAdapter
 import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -27,14 +27,14 @@ class ViewFragment : Fragment(R.layout.fragment_view) {
 
         binding = FragmentViewBinding.bind(view)
 
-        val studentAdapter = StudentAdapter(
-            viewModel.dataBaseViewModel.findDataBaseFlow, viewModel, findNavController()
+        val studentAdapter = StudentIndexesAdapter(
+            viewModel, findNavController(), viewModel.dataBaseViewModel.findDataBaseFlow
         )
         binding.recyclerView.adapter = studentAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this.context)
 
         lifecycleScope.launch {
-            BaseViewModel.instance.dataBaseViewModel.findDataBaseFlow.collect {
+            viewModel.dataBaseViewModel.findDataBaseFlow.collect {
                 studentAdapter.notifyDataSetChanged()
             }
         }

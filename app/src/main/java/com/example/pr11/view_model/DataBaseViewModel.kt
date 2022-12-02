@@ -5,16 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.student.StudentImpl
+import com.example.pr11.model.DataBaseFindIndexesFlow
 import com.example.pr11.model.StudentDataBaseFlow
 import kotlinx.coroutines.*
 
 class DataBaseViewModel : ViewModel() {
 
-    private val _studentImplList = StudentDataBaseFlow.instance
+    private val _studentDataBaseFlow = StudentDataBaseFlow.instance
+    val dataBaseFlow = _studentDataBaseFlow.dataBase
 
-    val dataBaseFlow = _studentImplList.dataBase
-
-    val findDataBaseFlow = _studentImplList.findDataBase
+    private val _dataBaseFindIndexesFlow = DataBaseFindIndexesFlow.instance
+    val findDataBaseFlow = _dataBaseFindIndexesFlow.dataBase
 
     fun add(
         surname: String,
@@ -22,34 +23,26 @@ class DataBaseViewModel : ViewModel() {
         patronymic: String,
         age: Int,
         sex: Sex,
-        image: Bitmap? = null,
+        photo: Bitmap? = null,
     ) {
         viewModelScope.launch {
-            StudentDataBaseFlow.instance.add(
+            _studentDataBaseFlow.add(
                 StudentImpl(
-                    surname, name, patronymic, age, sex, image
+                    surname, name, patronymic, age, sex, photo
                 )
             )
         }
     }
 
-    fun addToFindDataBase(
-        student: StudentImpl
-    ) {
-        viewModelScope.launch {
-            StudentDataBaseFlow.instance.addToFindDataBase(student)
-        }
-    }
-
     fun delete(index: Int) {
         viewModelScope.launch {
-            StudentDataBaseFlow.instance.delete(index)
+            _studentDataBaseFlow.delete(index)
         }
     }
 
-    fun deleteFindDataBase(index: Int) {
+    fun deleteIndex(index: Int) {
         viewModelScope.launch {
-            StudentDataBaseFlow.instance.deleteFindDataBase(index)
+            _dataBaseFindIndexesFlow.deleteIndex(index)
         }
     }
 
@@ -57,20 +50,24 @@ class DataBaseViewModel : ViewModel() {
         index: Int, student: StudentImpl
     ) {
         viewModelScope.launch {
-            StudentDataBaseFlow.instance.change(index, student)
+            _studentDataBaseFlow.change(index, student)
         }
     }
 
     fun sortBy(comparator: Comparator<in StudentImpl>) {
         viewModelScope.launch {
-            StudentDataBaseFlow.instance.sortBy(comparator)
+            _studentDataBaseFlow.sortBy(comparator)
         }
     }
 
-    suspend fun search(vararg predicates: (StudentImpl) -> Boolean): List<StudentImpl> {
-        var res: List<StudentImpl> = emptyList()
+    suspend fun search(vararg predicates: (StudentImpl) -> Boolean): List<Pair<Int, Int>> {
+        var res: List<Pair<Int, Int>> = emptyList()
         viewModelScope.async {
-            res = StudentDataBaseFlow.instance.search(*predicates)
+            res = _studentDataBaseFlow.searchIndexes(*predicates)
+            _dataBaseFindIndexesFlow.clear()
+            res.forEach {
+                _dataBaseFindIndexesFlow.addIndexes(it)
+            }
         }.await()
         return res
     }

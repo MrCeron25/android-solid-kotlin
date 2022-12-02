@@ -36,7 +36,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     SexParserImpl().getSexFromResourcesName(binding.sexSpinner.selectedItem.toString())
                 // booleanVariable = if (booleanMethod()) exp else true;
                 // booleanVariable = !booleanMethod() || exp;
-                val findStudents = viewModel.dataBaseViewModel.search({
+                viewModel.dataBaseViewModel.search({
                     if (surname.isNotEmpty()) it.surname.contains(
                         surname, ignoreCase = true
                     ) else true
@@ -47,9 +47,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     if (age != null) it.age == age else true
                     it.sex == sex
                 })
-                findStudents.forEach { student ->
-                    viewModel.dataBaseViewModel.addToFindDataBase(student)
-                }
+                // search сохраняет найденные записи в StudentDataBaseFindIndexesFlow
                 findNavController().navigate(
                     R.id.action_searchFragment_to_viewFragment
                 )

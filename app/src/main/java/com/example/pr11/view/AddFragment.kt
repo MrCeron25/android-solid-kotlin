@@ -1,15 +1,12 @@
 package com.example.pr11.view
 
-import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Toast
-import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -29,8 +26,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
-        super.onActivityResult(requestCode, resultCode, data)
+        @Suppress("DEPRECATION") super.onActivityResult(requestCode, resultCode, data)
 
         if ((resultCode == RESULT_OK) && (requestCode == CAMERA_REQ_CODE)) {
             @Suppress("DEPRECATION") val img = data?.extras?.get("data") as Bitmap
@@ -52,7 +48,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
                 val age = binding.editTextAge.text.toString().toIntOrNull() ?: 0
                 val sex =
                     SexParserImpl().getSexFromResourcesName(binding.sexSpinner.selectedItem.toString())
-                val photo = binding.photo.drawable.toBitmap()
+                val photo = binding.photo.drawable?.toBitmapOrNull()
                 viewModel.dataBaseViewModel.add(surname, name, patronymic, age, sex, photo)
                 findNavController().popBackStack()
             }
@@ -60,8 +56,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
         binding.addButtonPhoto.setOnClickListener {
             val intentCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            @Suppress("DEPRECATION")
-            startActivityForResult(intentCamera, CAMERA_REQ_CODE)
+            @Suppress("DEPRECATION") startActivityForResult(intentCamera, CAMERA_REQ_CODE)
         }
     }
 
