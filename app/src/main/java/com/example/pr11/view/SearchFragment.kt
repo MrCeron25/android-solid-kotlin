@@ -28,25 +28,19 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
         binding.searchButton.setOnClickListener {
             lifecycleScope.launch {
-                val surname = binding.editTextSurname.text.toString()
-                val name = binding.editTextName.text.toString()
-                val patronymic = binding.editTextPatronymic.text.toString()
+                val surname = binding.editTextSurname.text.toString().trim()
+                val name = binding.editTextName.text.toString().trim()
+                val patronymic = binding.editTextPatronymic.text.toString().trim()
                 val age = binding.editTextAge.text.toString().toIntOrNull()
                 val sex =
                     SexParserImpl().getSexFromResourcesName(binding.sexSpinner.selectedItem.toString())
-                // booleanVariable = if (booleanMethod()) exp else true;
-                // booleanVariable = !booleanMethod() || exp;
-                viewModel.dataBaseViewModel.search({
-                    if (surname.isNotEmpty()) it.surname.contains(
-                        surname, ignoreCase = true
-                    ) else true
-                    if (name.isNotEmpty()) it.name.contains(name, ignoreCase = true) else true
-                    if (patronymic.isNotEmpty()) it.patronymic.contains(
-                        patronymic, ignoreCase = true
-                    ) else true
-                    if (age != null) it.age == age else true
-                    it.sex == sex
-                })
+                viewModel.dataBaseViewModel.search(
+                    { it.surname.contains(surname, ignoreCase = true) },
+                    { it.name.contains(name, ignoreCase = true) },
+                    { it.patronymic.contains(patronymic, ignoreCase = true) },
+                    { if (age != null) it.age == age else true },
+                    { it.sex == sex }
+                )
                 // search сохраняет найденные записи в StudentDataBaseFindIndexesFlow
                 findNavController().navigate(
                     R.id.action_searchFragment_to_viewFragment

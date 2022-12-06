@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pr11.R
 import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.parsers.SexParserImpl
-import com.example.pr11.kotlin.student.StudentImpl
 import com.example.pr11.view.EditFragment
 import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.flow.StateFlow

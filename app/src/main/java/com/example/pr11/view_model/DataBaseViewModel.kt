@@ -7,7 +7,8 @@ import com.example.pr11.kotlin.enums.Sex
 import com.example.pr11.kotlin.student.StudentImpl
 import com.example.pr11.model.DataBaseFindIndexesFlow
 import com.example.pr11.model.StudentDataBaseFlow
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DataBaseViewModel : ViewModel() {
 
@@ -61,14 +62,14 @@ class DataBaseViewModel : ViewModel() {
     }
 
     suspend fun search(vararg predicates: (StudentImpl) -> Boolean): List<Pair<Int, Int>> {
-        var res: List<Pair<Int, Int>> = emptyList()
-        viewModelScope.async {
+        var res: List<Pair<Int, Int>>
+        withContext(viewModelScope.coroutineContext) {
             res = _studentDataBaseFlow.searchIndexes(*predicates)
             _dataBaseFindIndexesFlow.clear()
             res.forEach {
                 _dataBaseFindIndexesFlow.addIndexes(it)
             }
-        }.await()
+        }
         return res
     }
 

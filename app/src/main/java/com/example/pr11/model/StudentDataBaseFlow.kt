@@ -37,6 +37,13 @@ class StudentDataBaseFlow {
             age = 48
             sex = Sex.MAN
         })
+        add(studentFactory.create {
+            surname = "surname"
+            name = "name"
+            patronymic = "patronymic"
+            age = 20
+            sex = Sex.MAN
+        })
     }
     private val _dataBaseListFlow = MutableStateFlow(_dataBase.data.toList())
     val dataBase = _dataBaseListFlow.asStateFlow()

@@ -50,21 +50,15 @@ class DataBaseImpl<T> : DataBase<T> {
     }
 
     fun searchIndexes(vararg predicates: (T) -> Boolean): List<Pair<Int, Int>> =
-        _data.indexFilterAll(predicates = predicates)
+        _data.indexFilterAll(*predicates)
 
     private fun <T> List<T>.indexFilterAll(
-        vararg predicates: (T) -> Boolean, fair: Boolean = false
+        vararg predicates: (T) -> Boolean
     ): List<Pair<Int, Int>> {
         val result = mutableListOf<Pair<Int, Int>>()
         var counter = 0
         this.forEachIndexed { index, element ->
-            val pass = if (fair) {
-                predicates.any { it(element) }
-            } else {
-//                    predicates.all { it(elem).also { println("$it $elem") } }
-                predicates.all { it(element) }
-            }
-            if (pass) {
+            if (predicates.all { it(element) }) {
                 result.add(counter to index)
                 counter++
             }

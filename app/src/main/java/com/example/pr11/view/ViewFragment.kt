@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pr11.R
 import com.example.pr11.databinding.FragmentViewBinding
-import com.example.pr11.model.StudentAdapter
 import com.example.pr11.model.StudentIndexesAdapter
 import com.example.pr11.view_model.BaseViewModel
 import kotlinx.coroutines.launch
